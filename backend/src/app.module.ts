@@ -9,7 +9,7 @@ import { CategoryModule } from './category/category.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI!), // ← pakai tanda ! jika kamu yakin
+    MongooseModule.forRoot(process.env.MONGO_URI!),
     CategoryModule,
   ],
 })
