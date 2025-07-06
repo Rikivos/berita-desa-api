@@ -20,4 +20,4 @@ RUN yarn build
 CMD ["node", "dist/main"]
 
 # 8. Buka port (optional untuk dokumentasi)
-EXPOSE 3000
+EXPOSE 6000
