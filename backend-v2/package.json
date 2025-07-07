@@ -2,6 +2,8 @@
   "name": "backend-v2",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
+  "author": "ramadhani rizky",
   "license": "MIT",
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
