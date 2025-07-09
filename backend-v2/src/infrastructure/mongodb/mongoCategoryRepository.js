@@ -18,6 +18,19 @@ export class MongoCategoryRepository extends CategoryRepository {
         };
     }
 
+    async update(id, category) {
+        const updatedCategory = await CategoryModel.findByIdAndUpdate(id, category, { new: true });
+        return {
+            id: updatedCategory._id,
+            name: updatedCategory.name,
+            slug: updatedCategory.slug,
+        };
+    }
+
+    async remove(id) {
+        await CategoryModel.findByIdAndDelete(id);
+    }
+
     async findAll() {
         const categories = await CategoryModel.find();
         return categories.map(cat => ({
