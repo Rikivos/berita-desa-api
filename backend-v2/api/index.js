@@ -12,8 +12,8 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'API Backend Express is Running ✅' });
 });
 
-app.use('/api/users', userRoutes);
-app.use('/api', categoryRoutes);
+
+app.use('/api', categoryRoutes, userRoutes);
 
 await connectMongo();
 

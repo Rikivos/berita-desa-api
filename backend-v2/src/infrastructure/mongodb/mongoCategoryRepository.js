@@ -1,9 +1,13 @@
 import { CategoryRepository } from '../../domain/category/categoryRepository.js';
-import { model, Schema } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 
 const CategorySchema = new Schema({
     name: String,
     slug: String,
+    user: {
+        type: Types.ObjectId,
+        ref: 'User',
+      }
 }, { timestamps: true });
 
 const CategoryModel = model('Category', CategorySchema);
