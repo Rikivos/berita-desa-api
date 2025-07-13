@@ -1,9 +1,13 @@
 import { CategoryRepository } from '../../domain/category/categoryRepository.js';
-import { model, Schema } from "mongoose";
+import { model, Schema, Types, mongoose } from "mongoose";
 
 const CategorySchema = new Schema({
     name: String,
     slug: String,
+    user: {
+        type: Types.ObjectId,
+        ref: 'User',
+      }
 }, { timestamps: true });
 
 const CategoryModel = model('Category', CategorySchema);
@@ -15,6 +19,7 @@ export class MongoCategoryRepository extends CategoryRepository {
             id: newCategory._id,
             name: newCategory.name,
             slug: newCategory.slug,
+            user: newCategory.user
         };
     }
 
@@ -27,9 +32,9 @@ export class MongoCategoryRepository extends CategoryRepository {
         };
     }
 
-    async remove(id) {
-        await CategoryModel.findByIdAndDelete(id);
-    }
+    // async remove(id) {
+    //     await CategoryModel.findByIdAndDelete(id);
+    // }
 
     async findAll() {
         const categories = await CategoryModel.find();
@@ -49,4 +54,20 @@ export class MongoCategoryRepository extends CategoryRepository {
             slug: category.slug,
         };
     }
+
+    async delete(id) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return null;
+        }
+
+        const deletedCategory = await CategoryModel.findByIdAndDelete(id);
+        if (!deletedCategory) return null;
+
+        return {
+            id: deletedCategory._id,
+            name: deletedCategory.name,
+            slug: deletedCategory.slug,
+        };
+    }
+
 }

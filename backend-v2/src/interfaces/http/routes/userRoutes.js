@@ -1,6 +1,7 @@
 import express from 'express';
 import { registerUserHandler, loginUserHandler } from '../controllers/UserController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
+import { isAdminMiddleware } from '../middleware/isAdminMiddleware.js';
 
 const router = express.Router();
 
