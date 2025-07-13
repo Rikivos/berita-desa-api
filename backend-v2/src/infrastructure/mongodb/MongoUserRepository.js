@@ -9,8 +9,8 @@ const UserSchema = new Schema(
     password: String,
     role: {
       type: String,
-      enum: ["admin", "citizen", "writer"],
-      default: "citizen",
+      enum: ["admin", "user", "writer"],
+      default: "user",
     },
   },
   { timestamps: true }
@@ -27,5 +27,13 @@ export class MongoUserRepository extends UserRepository {
 
   async findByEmail(email) {
     return await UserModel.findOne({ email });
+  }
+
+  async findById(id) {
+    return await UserModel.findById(id);
+  }
+
+  async update(id, user) {
+    return await UserModel.findByIdAndUpdate(id, user, { new: true });
   }
 }
