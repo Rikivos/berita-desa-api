@@ -1,15 +1,19 @@
 import express from "express";
 import {
-  createCategory,
+  createCategoryController,
+  updateCategory,
+  deleteCategory,
   getAllCategory,
   getCategory,
 } from "../controllers/categoryController.js";
+import { authMiddleware } from '../middleware/authMiddleware.js';
+import { isAdminMiddleware } from '../middleware/isAdminMiddleware.js';
 
 const router = express.Router();
 
-router.post("/category", createCategory);
-router.put("/category/:id", createCategory);
-router.delete("/category/:id", createCategory);
+router.post("/category",authMiddleware, isAdminMiddleware, createCategoryController);
+router.put("/category/:id", authMiddleware, isAdminMiddleware, updateCategory);
+router.delete("/category/:id", authMiddleware, isAdminMiddleware, deleteCategory);
 router.get("/category/:id", getCategory);
 router.get("/categories", getAllCategory);
 

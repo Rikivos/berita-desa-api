@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { connectMongo } from '../src/infrastructure/mongodb/mongoClient.js';
 import userRoutes from '../src/interfaces/http/routes/userRoutes.js';
 import categoryRoutes from '../src/interfaces/http/routes/categoryRoutes.js';
+import postRoutes from '../src/interfaces/http/routes/postRoutes.js';
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -13,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.use('/api', categoryRoutes, userRoutes);
+app.use('/api', categoryRoutes, userRoutes, postRoutes);
 
 await connectMongo();
 

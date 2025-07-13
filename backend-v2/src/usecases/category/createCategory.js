@@ -7,13 +7,19 @@ export class CreateCategory {
         this.categoryRepository = categoryRepository;
     }
 
-    async execute({ name }) {
+    async execute({ name, userId }) {
         if (!name || typeof name !== 'string') {
             throw new Error('Name is required and must be a string.');
         }
 
+        if (!userId) {
+            throw new Error('User ID is required to create category.');
+        }
+
         const slug = slugify(name, { lower: true, strict: true });
-        const category = new Category({ name, slug });
+
+        // Sertakan userId dalam entitas category
+        const category = new Category({ name, slug, user: userId });
 
         const result = await this.categoryRepository.create(category);
         return result;

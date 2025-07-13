@@ -18,13 +18,18 @@ const getCategory = (req, res, next) => {
   return handler.handle(req, res, next);
 };
 const createCategoryController = async (req, res, next) => {
-    try {
-        const result = await createCategory.execute({ name: req.body.name });
-        return res.status(201).json(result);
-    } catch (err) {
-        next(err);
-    }
+  try {
+    const { name } = req.body;
+    const userId = req.user.id; 
+
+    const result = await createCategory.execute({ name, userId });
+
+    return res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  }
 };
+
 const updateCategory = (req, res, next) => {
   const handler = new UpdateCategory(categoryRepo);
   return handler.handle(req, res, next);
