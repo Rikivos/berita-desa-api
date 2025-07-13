@@ -12,17 +12,17 @@ export const LoginUser = (userRepository) => async ({ email, password }) => {
   const payload = {
     id: user._id,
     email: user.email,
-    role: user.role,  // <-- pastikan ini ada di database user
+    role: user.role,  
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '10h' });
 
   return {
     token,
     user: {
       id: user._id,
       email: user.email,
-      role: user.role,  // optional, tapi berguna di response
+      role: user.role, 
     }
   };
 };

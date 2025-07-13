@@ -86,9 +86,14 @@ export class MongoPostRepository extends PostRepository {
     };
   }
 
-  async delete(postId) {
-    const deletedPost = await PostModel.findByIdAndDelete(postId);
+  async delete(id) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return null;
+    }
+
+    const deletedPost = await PostModel.findByIdAndDelete(id);
     if (!deletedPost) return null;
+
     return {
       id: deletedPost._id,
       title: deletedPost.title,

@@ -2,19 +2,19 @@ import express from 'express';
 import {
     createPostController,
     // updatePost,
-    // deletePost,
+    deletePostController,
     getAllPostController,
-    // getPost,
+    getPostController,
 } from '../controllers/postController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { isAdminMiddleware } from '../middleware/isAdminMiddleware.js';
 
 const router = express.Router();
 
-router.post('/post', createPostController);
+router.post('/post', authMiddleware, isAdminMiddleware, createPostController);
 // router.put('/post/:id', authMiddleware, isAdminMiddleware, updatePost);
-// router.delete('/post/:id', authMiddleware, isAdminMiddleware, deletePost);
-// router.get('/post/:id', getPost);
+router.delete('/post/:id', authMiddleware, isAdminMiddleware, deletePostController);
+router.get('/post/:id', getPostController);
 router.get('/posts', getAllPostController);
 
 export default router;

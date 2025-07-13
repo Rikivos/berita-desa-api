@@ -23,3 +23,13 @@ export const loginUserHandler = async (req, res) => {
     res.status(401).json({ success: false, message: err.message });
   }
 };
+
+const registerController = async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+    const result = await registerUser({ name, email, password, role });
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
