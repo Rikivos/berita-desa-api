@@ -3,11 +3,13 @@ import { CreateUser } from '../../../usecases/user/CreateUser.js';
 import { LoginUser } from '../../../usecases/user/LoginUser.js';
 import { RegisterUser } from '../../../usecases/user/registerUser.js';
 import { GetAllUser } from '../../../usecases/user/getAllUser.js';
+import { UpdateUser } from '../../../usecases/user/updateUser.js';
 
 const userRepo = new MongoUserRepository();
 const createUser = CreateUser(userRepo);
 const loginUser = LoginUser(userRepo);
 const getAllUser = new GetAllUser(userRepo);
+const updateUserUseCase = new UpdateUser(userRepo);
 
 
 export const createUserHandler = async (req, res) => {
@@ -51,3 +53,15 @@ export const getAllUserController = async (req, res) => {
   }
 };
 
+export const updateUserController = async (req, res) => {
+  const { id } = req.params;          
+  const updateData = req.body;
+  const currentUser = req.user;        // dari auth middleware (decoded token)
+
+  try {
+    const updatedUser = await updateUserUseCase.execute(currentUser, id, updateData);
+    res.status(200).json({ success: true, user: updatedUser });
+  } catch (error) {
+    res.status(403).json({ success: false, message: error.message });
+  }
+};
