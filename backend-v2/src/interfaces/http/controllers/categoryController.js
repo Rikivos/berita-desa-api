@@ -1,4 +1,5 @@
 import { MongoCategoryRepository } from '../../../infrastructure/mongodb/mongoCategoryRepository.js';
+import { MongoPostRepository } from '../../../infrastructure/mongodb/mongoPostRepository.js';
 import { GetAllCategory } from '../../../usecases/category/getAllCategory.js';
 import { GetCategory } from '../../../usecases/category/getCategory.js';
 import { CreateCategory } from '../../../usecases/category/createCategory.js';
@@ -6,6 +7,7 @@ import { UpdateCategory } from '../../../usecases/category/updateCategory.js';
 import { DeleteCategory } from '../../../usecases/category/deleteCategory.js';
 
 const categoryRepo = new MongoCategoryRepository();
+const postRepo = new MongoPostRepository();
 const createCategory = new CreateCategory(categoryRepo);
 const getAllCategory = new GetAllCategory(categoryRepo);
 
@@ -41,7 +43,10 @@ const updateCategory = (req, res, next) => {
 };
 
 const deleteCategory = (req, res, next) => {
-  const handler = new DeleteCategory(categoryRepo);
+  const handler = new DeleteCategory({
+    categoryRepository: categoryRepo,
+    postRepository: postRepo
+  });
   return handler.handle(req, res, next);
 };
 
