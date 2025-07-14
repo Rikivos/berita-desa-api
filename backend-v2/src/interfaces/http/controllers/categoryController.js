@@ -7,10 +7,15 @@ import { DeleteCategory } from '../../../usecases/category/deleteCategory.js';
 
 const categoryRepo = new MongoCategoryRepository();
 const createCategory = new CreateCategory(categoryRepo);
+const getAllCategory = new GetAllCategory(categoryRepo);
 
-const getAllCategory = (req, res, next) => {
-  const handler = new GetAllCategory(categoryRepo);
-  return handler.handle(req, res, next);
+const getAllCategoryController = async (req, res) => {
+    try {
+        const posts = await getAllCategory.execute();
+        res.status(200).json(posts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
 const getCategory = (req, res, next) => {
@@ -40,4 +45,4 @@ const deleteCategory = (req, res, next) => {
   return handler.handle(req, res, next);
 };
 
-export { getAllCategory, getCategory, createCategoryController, updateCategory, deleteCategory };
+export { getAllCategoryController, getCategory, createCategoryController, updateCategory, deleteCategory };
