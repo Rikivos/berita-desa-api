@@ -105,4 +105,9 @@ export class MongoPostRepository extends PostRepository {
       category: deletedPost.category,
     };
   }
+
+  async countByCategoryId(categoryId) {
+    return await PostModel.countDocuments({ category: categoryId });
+  }
+  
 }
