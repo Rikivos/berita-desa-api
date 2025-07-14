@@ -1,12 +1,13 @@
 import { MongoUserRepository } from '../../../infrastructure/mongodb/MongoUserRepository.js';
 import { CreateUser } from '../../../usecases/user/CreateUser.js';
 import { LoginUser } from '../../../usecases/user/LoginUser.js';
+import { RegisterUser } from '../../../usecases/user/registerUser.js';
 
 const userRepo = new MongoUserRepository();
 const createUser = CreateUser(userRepo);
 const loginUser = LoginUser(userRepo);
 
-export const registerUserHandler = async (req, res) => {
+export const createUserHandler = async (req, res) => {
   try {
     const result = await createUser(req.body);
     res.status(201).json({ success: true, user: result });
@@ -24,12 +25,15 @@ export const loginUserHandler = async (req, res) => {
   }
 };
 
-const registerController = async (req, res) => {
+export const registerController = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
-    const result = await registerUser({ name, email, password, role });
+    const { name, email, password } = req.body;
+
+    const registerUser = RegisterUser(userRepo);
+    const result = await registerUser({ name, email, password });
+
     res.status(201).json(result);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
