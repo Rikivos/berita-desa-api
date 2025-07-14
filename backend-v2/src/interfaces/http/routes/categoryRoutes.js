@@ -3,7 +3,7 @@ import {
   createCategoryController,
   updateCategory,
   deleteCategory,
-  getAllCategory,
+  getAllCategoryController,
   getCategory,
 } from "../controllers/categoryController.js";
 import { authMiddleware } from '../middleware/authMiddleware.js';
@@ -15,6 +15,6 @@ router.post("/category",authMiddleware, isAdminMiddleware, createCategoryControl
 router.put("/category/:id", authMiddleware, isAdminMiddleware, updateCategory);
 router.delete("/category/:id", authMiddleware, isAdminMiddleware, deleteCategory);
 router.get("/category/:id", getCategory);
-router.get("/categories", getAllCategory);
+router.get("/categories", getAllCategoryController);
 
 export default router;

@@ -1,14 +1,15 @@
 import express from 'express';
-import { registerUserHandler, loginUserHandler } from '../controllers/UserController.js';
+import { createUserHandler, loginUserHandler, registerController, getAllUserController, updateUserController } from '../controllers/UserController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { isAdminMiddleware } from '../middleware/isAdminMiddleware.js';
 
 const router = express.Router();
 
-router.post('/register', registerUserHandler);
+router.post('/register', registerController);
 router.post('/login', loginUserHandler);
-router.get('/profile', authMiddleware, (req, res) => {
-  res.json({ message: 'Welcome!', user: req.user });
-});
+router.post('/user', authMiddleware, isAdminMiddleware, createUserHandler);
+router.put('/user/:id', authMiddleware,updateUserController);
+router.get('/users', authMiddleware, isAdminMiddleware, getAllUserController);
+
 
 export default router;

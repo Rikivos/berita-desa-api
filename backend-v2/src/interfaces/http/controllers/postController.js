@@ -9,7 +9,7 @@ const postRepo = new MongoPostRepository();
 const getAllPost = new GetAllPost(postRepo);
 const getPost = new GetPost(postRepo);
 const createPost = new CreatePost({ postRepository: postRepo });
-const updatePost = new UpdatePost(postRepo);
+// const updatePost = new UpdatePost(postRepo);
 const deletePost = new DeletePost({ postRepository: postRepo });
 
 const createPostController = async (req, res) => {
@@ -48,20 +48,36 @@ const getAllPostController = async (req, res) => {
     }
 };
 
+// const updatePostController = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { title } = req.body;
+//         const { content } = req.body;
+//         const { status } = req.body;
+//         const { image } = req.body;
+//         const { category } = req.body;
+//         const post = await updatePost.execute({ id, title, content, status, image, category });
+//         res.status(200).json(post);
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// };
+
 const updatePostController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { title } = req.body;
-        const { content } = req.body;
-        const { status } = req.body;
-        const { image } = req.body;
-        const { category } = req.body;
-        const post = await updatePost.execute({ id, title, content, status, image, category });
-        res.status(200).json(post);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+  try {
+    const { id } = req.params;
+    const { title, content, status, image, category } = req.body;
+    const userId = req.user.id; 
+
+    const handler = new UpdatePost({ postRepository: postRepo });
+    const post = await handler.execute({ id, title, content, status, userId, image, category });
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
+
 
 const deletePostController = (req, res, next) => {
   const handler = new DeletePost(postRepo);

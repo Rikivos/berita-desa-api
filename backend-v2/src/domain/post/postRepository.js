@@ -14,5 +14,17 @@ export class PostRepository {
     async findById(_id) {
         throw new Error('Not Implemented');
     }
+
+    async update(_id, _post) {
+        throw new Error('Not Implemented');
+    }
+
+    async findBySlug(_slug) {
+        throw new Error('Not Implemented');
+    }
+
+    async deleteById(_id) {
+        throw new Error('Not Implemented');
+    }
     
 }

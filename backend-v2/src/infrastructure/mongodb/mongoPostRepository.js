@@ -70,8 +70,8 @@ export class MongoPostRepository extends PostRepository {
     };
   }
 
-  async update(postId, post) {
-    const updatedPost = await PostModel.findByIdAndUpdate(postId, post, {
+  async update(id, post) {
+    const updatedPost = await PostModel.findByIdAndUpdate(id, post, {
       new: true,
     });
     return {

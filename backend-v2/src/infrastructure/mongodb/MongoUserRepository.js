@@ -36,4 +36,8 @@ export class MongoUserRepository extends UserRepository {
   async update(id, user) {
     return await UserModel.findByIdAndUpdate(id, user, { new: true });
   }
+
+  async findAll() {
+    return await UserModel.find({});
+  }
 }

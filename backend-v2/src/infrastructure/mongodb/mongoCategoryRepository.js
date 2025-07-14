@@ -38,10 +38,10 @@ export class MongoCategoryRepository extends CategoryRepository {
 
     async findAll() {
         const categories = await CategoryModel.find();
-        return categories.map(cat => ({
-            id: cat._id,
-            name: cat.name,
-            slug: cat.slug,
+        return categories.map((category) => ({
+            id: category._id,
+            name: category.name,
+            slug: category.slug,
         }));
     }
 
