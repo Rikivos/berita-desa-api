@@ -2,10 +2,13 @@ import { MongoUserRepository } from '../../../infrastructure/mongodb/MongoUserRe
 import { CreateUser } from '../../../usecases/user/CreateUser.js';
 import { LoginUser } from '../../../usecases/user/LoginUser.js';
 import { RegisterUser } from '../../../usecases/user/registerUser.js';
+import { GetAllUser } from '../../../usecases/user/getAllUser.js';
 
 const userRepo = new MongoUserRepository();
 const createUser = CreateUser(userRepo);
 const loginUser = LoginUser(userRepo);
+const getAllUser = new GetAllUser(userRepo);
+
 
 export const createUserHandler = async (req, res) => {
   try {
@@ -37,3 +40,14 @@ export const registerController = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const getAllUserController = async (req, res) => {
+  try {
+    const getAllUser = new GetAllUser(userRepo);
+    const result = await getAllUser.execute();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
