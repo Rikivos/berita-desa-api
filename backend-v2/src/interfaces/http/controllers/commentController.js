@@ -3,13 +3,14 @@ import { MongoCommentRepository } from '../../../infrastructure/mongodb/mongoCom
 import { GetAllComments } from '../../../usecases/comment/getAllComment.js';
 
 const commentRepository = new MongoCommentRepository(); 
-const getAllComments = new GetAllComments({ commentRepository });
+const getNestedComments = new GetAllComments({ commentRepository });
+
 
 export const getAllCommentsController = async (req, res) => {
   try {
     const postId = req.params.postId;
-    const comments = await getAllComments.execute(postId);
-    res.status(200).json(comments);
+    const nestedComments = await getNestedComments.execute(postId);
+    res.status(200).json(nestedComments);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -21,7 +22,7 @@ export const createCommentController = async (req, res) => {
     const postId = req.params.postId;
     const userId = req.user.id;
 
-    const useCase = new CreateComment({ commentRepository }); // ✅ Sudah didefinisikan
+    const useCase = new CreateComment({ commentRepository }); 
     const result = await useCase.execute({
       post: postId,
       user: userId,
