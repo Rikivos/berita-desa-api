@@ -46,13 +46,17 @@ export const registerController = async (req, res) => {
 
 export const getAllUserController = async (req, res) => {
   try {
-    const getAllUser = new GetAllUser(userRepo);
-    const result = await getAllUser.execute();
-    res.status(200).json(result);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const users = await getAllUser.execute({ page, limit });
+
+    res.status(200).json({ data: users, page, limit });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const updateUserController = async (req, res) => {
   const { id } = req.params;          

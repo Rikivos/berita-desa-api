@@ -37,9 +37,15 @@ export class MongoUserRepository extends UserRepository {
     return await UserModel.findByIdAndUpdate(id, user, { new: true });
   }
 
-  async findAll() {
-    return await UserModel.find({});
-  }
+  async findAll(page = 1, limit = 10) {
+  const offset = (page - 1) * limit;
+  return await UserModel.find({})
+    .select('name email role') 
+    .skip(offset)
+    .limit(limit)
+    .lean(); 
+}
+
 
   async delete(id) {
     if (!mongoose.Types.ObjectId.isValid(id)) {

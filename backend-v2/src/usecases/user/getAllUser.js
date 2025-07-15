@@ -3,7 +3,7 @@ export class GetAllUser {
     this.userRepository = userRepository;
   }
 
-  async execute() {
-    return await this.userRepository.findAll();
+  async execute({ page, limit }) {
+    return await this.userRepository.findAll({ page, limit });
   }
 }
