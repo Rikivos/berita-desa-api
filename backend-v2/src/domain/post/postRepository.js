@@ -3,6 +3,14 @@ export class PostRepository {
         throw new Error('Not Implemented');
     }
 
+    async getAll() {
+        throw new Error('Not Implemented');
+    }
+
+    async getById(_id) {
+        throw new Error('Not Implemented');
+    }
+
     async remove(_id) {
         throw new Error('Not Implemented');
     }
@@ -26,5 +34,5 @@ export class PostRepository {
     async deleteById(_id) {
         throw new Error('Not Implemented');
     }
-    
+
 }

@@ -4,30 +4,44 @@ import { GetPost } from '../../../usecases/post/getPost.js';
 import { CreatePost } from '../../../usecases/post/createPost.js';
 import { UpdatePost } from '../../../usecases/post/updatePost.js';
 import { DeletePost } from '../../../usecases/post/deletePost.js';
+import S3Service from '../../../infrastructure/aws/S3Service.js';
+
+const s3Service = new S3Service();
 
 const postRepo = new MongoPostRepository();
 const getAllPost = new GetAllPost(postRepo);
 const getPost = new GetPost(postRepo);
-const createPost = new CreatePost({ postRepository: postRepo });
+const createPost = new CreatePost({ postRepository : postRepo, s3Service });  // Pastikan s3Service dikirimkan ke CreatePost
 // const updatePost = new UpdatePost(postRepo);
 const deletePost = new DeletePost({ postRepository: postRepo });
 
 const createPostController = async (req, res) => {
-    
     try {
-        const { title} = req.body;
-        const { content } = req.body;
-        const { image } = req.body;
-        const { status } = req.body;
-        const  userId  = req.user.id;
-        const { category } = req.body;
-
-        const post = await createPost.execute({ title, content, image, status, userId, category });
-        res.status(201).json(post);
+      const { title, content, status, category } = req.body;
+      const { file } = req;  // Pastikan file diambil dari req.file (hasil upload multer)
+      const userId = req.user.id;  // Mendapatkan userId dari middleware authentication
+  
+      if (!file) {
+        return res.status(400).json({ message: "File image is required." });
+      }
+  
+      // Mengirim data ke use case untuk membuat post
+      const post = await createPost.execute({
+        title,
+        content,
+        image: file,  // Pastikan file dikirimkan di sini
+        status,
+        userId,
+        category
+      });
+  
+      res.status(201).json(post);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+      console.error(error);
+      res.status(400).json({ message: error.message || "Error creating post." });
     }
-};
+  };
+  
 
 const getPostController = async (req, res) => {
     try {
