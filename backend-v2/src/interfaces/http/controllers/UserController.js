@@ -4,6 +4,7 @@ import { LoginUser } from '../../../usecases/user/LoginUser.js';
 import { RegisterUser } from '../../../usecases/user/registerUser.js';
 import { GetAllUser } from '../../../usecases/user/getAllUser.js';
 import { UpdateUser } from '../../../usecases/user/updateUser.js';
+import { DeleteUser } from '../../../usecases/user/deleteUser.js';
 
 const userRepo = new MongoUserRepository();
 const createUser = CreateUser(userRepo);
@@ -65,3 +66,8 @@ export const updateUserController = async (req, res) => {
     res.status(403).json({ success: false, message: error.message });
   }
 };
+
+export const deleteUserController = (req, res, next) => {
+  const handler = new DeleteUser(userRepo);
+  handler.handle(req, res, next);
+}

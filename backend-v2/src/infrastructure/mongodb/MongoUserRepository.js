@@ -1,5 +1,5 @@
 import { UserRepository } from "../../domain/user/UserRepository.js";
-import { model, Schema } from "mongoose";
+import { model, Schema, mongoose } from "mongoose";
 import bcrypt from "bcryptjs";
 
 const UserSchema = new Schema(
@@ -39,5 +39,12 @@ export class MongoUserRepository extends UserRepository {
 
   async findAll() {
     return await UserModel.find({});
+  }
+
+  async delete(id) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return null;
+    }
+    return await UserModel.findByIdAndDelete(id);
   }
 }

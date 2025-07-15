@@ -4,5 +4,5 @@ export class UserRepository {
   async findById(id) { throw new Error('Not implemented'); }
   async findAll() { throw new Error('Not implemented'); }
   async update(id, user) { throw new Error('Not implemented'); }
-  async remove(id) { throw new Error('Not implemented'); }
+  async delete(id) { throw new Error('Not implemented'); }
 }
