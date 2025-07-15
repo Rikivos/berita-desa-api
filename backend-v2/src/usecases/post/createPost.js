@@ -1,9 +1,11 @@
 import slugify from "slugify";
-import { Post } from "../../domain/post/Post.js";   
+import { Post } from "../../domain/post/Post.js";  
+import S3Service from "../../infrastructure/aws/S3Service.js"; 
 
 export class CreatePost {
-  constructor({ postRepository }) {
+  constructor({ postRepository, s3Service }) {
     this.postRepository = postRepository;
+    this.s3Service = s3Service;
   }
 
   async execute({ title, content, image, status, userId, category }) {
@@ -31,9 +33,20 @@ export class CreatePost {
       throw new Error("Image is required to create post.");
     }
 
+    // Upload image to S3
+    const imageUrl = await this.s3Service.uploadImage(image); // Menggunakan uploadImage untuk mendapatkan URL
+
     const slug = slugify(title, { lower: true, strict: true });
 
-    const post = new Post({ title, slug, image, content, status, user: userId, category });
+    const post = new Post({
+      title,
+      slug,
+      image: imageUrl,  // Menyimpan URL gambar
+      content,
+      status,
+      user: userId,
+      category
+    });
 
     const result = await this.postRepository.create(post);
     return result;

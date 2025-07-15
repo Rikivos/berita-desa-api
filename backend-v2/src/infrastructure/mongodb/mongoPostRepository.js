@@ -55,6 +55,21 @@ export class MongoPostRepository extends PostRepository {
     }));
   }
 
+  async getById(id) {
+    const post = await PostModel.findById(id);
+    if (!post) return null;
+    return {
+      id: post._id,
+      title: post.title,
+      slug: post.slug,
+      image: post.image,
+      content: post.content,
+      status: post.status,
+      user: post.user,
+      category: post.category,
+    };
+  }
+
   async findById(postId) {
     const post = await PostModel.findById(postId);
     if (!post) return null;
