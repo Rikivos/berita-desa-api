@@ -15,7 +15,7 @@ const storage = multer.memoryStorage(); // Menyimpan gambar dalam memory
 const upload = multer({ storage: storage });
 
 router.post('/post', authMiddleware, isAdminMiddleware, upload.single("image"), createPostController);
-router.put('/post/:id', authMiddleware, isAdminMiddleware, updatePostController);
+router.put('/post/:id', authMiddleware, isAdminMiddleware,  upload.single("image"), updatePostController);
 router.delete('/post/:id', authMiddleware, isAdminMiddleware, deletePostController);
 router.get('/post/:id', getPostController);
 router.get('/posts', getAllPostController);
