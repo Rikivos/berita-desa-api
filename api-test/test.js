@@ -7,7 +7,7 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('https://berita-desa-api2.vercel.app/api/posts');
+  const res = http.get('http://localhost:3000/api/posts?page=1');
 
   // Cek respons sukses
   check(res, {

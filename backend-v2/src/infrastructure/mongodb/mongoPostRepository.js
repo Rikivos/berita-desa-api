@@ -1,5 +1,6 @@
 import { PostRepository } from "../../domain/post/postRepository.js";
 import { model, Schema, Types, mongoose } from "mongoose";
+import redis from "../redis/redis.js";
 
 const PostSchema = new Schema(
   {
@@ -45,24 +46,35 @@ export class MongoPostRepository extends PostRepository {
     };
   }
 
-  async getAll({ page = 1, limit = 10 } = {}) {
+  async getAll({ page = 1, limit = 10, status, category, search } = {}) {
     const skip = (page - 1) * limit;
   
-    // Pakai Promise.all agar query berjalan paralel
+    const cacheKey = `posts:page=${page}:limit=${limit}:status=${status || ''}:category=${category || ''}:search=${search || ''}`;
+    const cached = await redis.get(cacheKey);
+    if (cached) {
+      console.log('✅ Serve from Redis');
+      return JSON.parse(cached);
+    } else {
+      console.log('❌ Redis miss');
+    }
+  
+    // Query ke MongoDB
+    const query = {};
+    if (status) query.status = status;
+    if (category) query.category = category;
+    if (search) query.title = { $regex: search, $options: 'i' };
+  
     const [posts, totalCount] = await Promise.all([
-      PostModel.find()
+      PostModel.find(query)
         .skip(skip)
         .limit(limit)
-        .select('title slug image content status user category') // hanya field penting
-        .populate('user', 'name') // hanya ambil nama user
-        .populate('category', 'name slug') // hanya ambil nama dan slug kategori
-        .lean(), // objek biasa, bukan mongoose document
-      PostModel.countDocuments()
+        .select('title slug image status user category')
+        .lean(),
+      PostModel.countDocuments(query)
     ]);
   
     const totalPages = Math.ceil(totalCount / limit);
-  
-    return {
+    const result = {
       data: posts,
       pagination: {
         totalCount,
@@ -71,6 +83,9 @@ export class MongoPostRepository extends PostRepository {
         perPage: limit
       }
     };
+  
+    await redis.set(cacheKey, JSON.stringify(result), 'EX', 600);
+    return result;
   }
   
 
