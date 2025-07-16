@@ -13,6 +13,39 @@
 
 ---
 
+## 🗂️ Struktur Folder (Clean Architecture)
+
+Proyek backend ini mengikuti pendekatan **Clean Architecture** dengan struktur direktori sebagai berikut:
+
+```
+backend-v2/
+├── api
+   ├── index.js
+├── src/
+│   ├── config/        
+│   ├── controllers/    
+│   ├── usecases/       
+│   ├── repositories/   
+│   ├── middlewares/    
+│   ├── routes/                    
+├── .env                
+├── .env.example
+```
+
+---
+
+## 🧰 Teknologi yang Digunakan
+
+- **Express.js** – Web framework untuk Node.js
+- **MongoDB Atlas** – Database NoSQL berbasis cloud
+- **Mongoose** – ODM (Object Data Modeling) untuk MongoDB
+- **Redis** – Caching untuk optimasi performa
+- **JWT (JSON Web Token)** – Untuk autentikasi dan otorisasi pengguna
+- **AWS S3** – Untuk penyimpanan gambar (upload post/image)
+- **Vercel** – Deployment backend API
+
+---
+
 ## 🛠️ Instalasi Backend
 
 Ikuti langkah-langkah berikut untuk menjalankan backend secara lokal:
@@ -140,37 +173,4 @@ Proyek ini dibangun oleh:
 ## 📄 Lisensi
 
 Proyek ini menggunakan lisensi **MIT** – bebas digunakan dan dimodifikasi sesuai kebutuhan.
----
-
-## 🗂️ Struktur Folder (Clean Architecture)
-
-Proyek backend ini mengikuti pendekatan **Clean Architecture** dengan struktur direktori sebagai berikut:
-
-```
-backend-v2/
-├── api
-   ├── index.js
-├── src/
-│   ├── config/        
-│   ├── controllers/    
-│   ├── usecases/       
-│   ├── repositories/   
-│   ├── middlewares/    
-│   ├── routes/                    
-├── .env                
-├── .env.example
-```
-
----
-
-## 🧰 Teknologi yang Digunakan
-
-- **Express.js** – Web framework untuk Node.js
-- **MongoDB Atlas** – Database NoSQL berbasis cloud
-- **Mongoose** – ODM (Object Data Modeling) untuk MongoDB
-- **Redis** – Caching untuk optimasi performa
-- **JWT (JSON Web Token)** – Untuk autentikasi dan otorisasi pengguna
-- **AWS S3** – Untuk penyimpanan gambar (upload post/image)
-- **Vercel** – Deployment backend API
-
 ---
