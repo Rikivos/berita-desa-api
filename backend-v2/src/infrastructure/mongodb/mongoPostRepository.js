@@ -23,6 +23,10 @@ const PostSchema = new Schema(
   },
   { timestamps: true }
 );
+PostSchema.index({ user: 1 });
+PostSchema.index({ category: 1 });
+PostSchema.index({ status: 1 });
+PostSchema.index({ createdAt: -1 });
 
 const PostModel = model("Post", PostSchema);
 
@@ -41,19 +45,34 @@ export class MongoPostRepository extends PostRepository {
     };
   }
 
-  async getAll() {
-    const posts = await PostModel.find();
-    return posts.map((post) => ({
-      id: post._id,
-      title: post.title,
-      slug: post.slug,
-      image: post.image,
-      content: post.content,
-      status: post.status,
-      user: post.user,
-      category: post.category,
-    }));
+  async getAll({ page = 1, limit = 10 } = {}) {
+    const skip = (page - 1) * limit;
+  
+    // Pakai Promise.all agar query berjalan paralel
+    const [posts, totalCount] = await Promise.all([
+      PostModel.find()
+        .skip(skip)
+        .limit(limit)
+        .select('title slug image content status user category') // hanya field penting
+        .populate('user', 'name') // hanya ambil nama user
+        .populate('category', 'name slug') // hanya ambil nama dan slug kategori
+        .lean(), // objek biasa, bukan mongoose document
+      PostModel.countDocuments()
+    ]);
+  
+    const totalPages = Math.ceil(totalCount / limit);
+  
+    return {
+      data: posts,
+      pagination: {
+        totalCount,
+        totalPages,
+        currentPage: page,
+        perPage: limit
+      }
+    };
   }
+  
 
   async getById(id) {
     const post = await PostModel.findById(id);
@@ -124,5 +143,4 @@ export class MongoPostRepository extends PostRepository {
   async countByCategoryId(categoryId) {
     return await PostModel.countDocuments({ category: categoryId });
   }
-  
 }
