@@ -52,11 +52,13 @@ const getPostController = async (req, res) => {
 
 const getAllPostController = async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query;
-
-    const result = await getAllPost.execute({
-      page: parseInt(page),
-      limit: parseInt(limit),
+    const { page, limit, status, category, search } = req.query;
+    const result = await getAllPost.execute({ 
+      page: parseInt(page), 
+      limit: parseInt(limit), 
+      status, 
+      category, 
+      search 
     });
 
     res.status(200).json(result); // result sudah berisi data + pagination
