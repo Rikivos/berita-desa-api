@@ -10,7 +10,6 @@
 - Pengelompokan berdasarkan kategori
 - Sistem komentar antar pengguna
 - Autentikasi dan otorisasi pengguna
-- API publik yang dapat digunakan untuk integrasi frontend
 
 ---
 
@@ -160,8 +159,6 @@ backend-v2/
 │   ├── routes/                    
 ├── .env                
 ├── .env.example
-
-
 ```
 
 ---
