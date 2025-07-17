@@ -61,7 +61,7 @@ const getAllPostController = async (req, res) => {
       search 
     });
 
-    res.status(200).json(result); // result sudah berisi data + pagination
+    res.status(200).json(result); 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -71,7 +71,7 @@ const updatePostController = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
-    const { file } = req; // dari multer
+    const { file } = req; 
 
     const title = req.body?.title;
     const content = req.body?.content;

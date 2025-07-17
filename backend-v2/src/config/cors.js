@@ -1,4 +1,3 @@
-// src/config/cors.js
 import dotenv from 'dotenv';
 
 dotenv.config();
