@@ -67,9 +67,9 @@ Ikuti langkah-langkah berikut untuk menjalankan backend secara lokal:
 
 4. **Jalankan server lokal**
    ```bash
-   yarn dev
+   yarn start
    # atau
-   vercel dev
+   npm start
    ```
 
 5. **Akses aplikasi**

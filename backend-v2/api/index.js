@@ -21,13 +21,12 @@ app.get('/', (req, res) => {
 
 app.use('/api', categoryRoutes, userRoutes, postRoutes, commentRoutes);
 
-await connectMongo();
-
-// const PORT = process.env.PORT || 6000;
-// connectMongo().then(() => {
-//   app.listen(PORT, () => {
-//     console.log(`✅ Server running at http://localhost:${PORT}`);
-//   });
-// });
+// await connectMongo();
+const PORT = process.env.PORT || 3000;
+connectMongo().then(() => {
+  app.listen(PORT, () => {
+    console.log(`✅ Server running at http://localhost:${PORT}`);
+  });
+});
 
 export default app;
